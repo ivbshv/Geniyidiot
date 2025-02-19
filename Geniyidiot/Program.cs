@@ -16,7 +16,8 @@ namespace Geniyidiot
             questions[2] = "На двух руках 10 пальцев. Сколько пальцев на 5 руках?";
             questions[3] = "Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?";
             questions[4] = "Пять свечей горело, две потухли. Сколько свечей осталось?";
-
+            questions[5] = "Сколько будет 5 в квадрате?";
+            questions[6] = "Сколько месяцев в году имеют 28 дней?";
             return questions;
         }
 
@@ -28,6 +29,8 @@ namespace Geniyidiot
             answers[2] = 25;
             answers[3] = 60;
             answers[4] = 2;
+            answers[5] = 25;
+            answers[6] = 12;
             return answers;
         }
 
@@ -52,7 +55,7 @@ namespace Geniyidiot
 
             do 
             {
-                int countQuestions = 5;
+                int countQuestions = 7;
 
                 string[] questions = GetQuestions(countQuestions);
 
@@ -94,7 +97,7 @@ namespace Geniyidiot
                     }
                 }
 
-                int diagnosisIndex = Math.Min(countRightAnswers, diagnoses.Length - 1);
+                int diagnosisIndex = countRightAnswers * (diagnoses.Length - 1) / countQuestions;
                 Console.WriteLine($"{name}, Ваш диагноз : {diagnoses[diagnosisIndex]}");
                 Console.WriteLine("Правильных ответов " + countRightAnswers);
 
