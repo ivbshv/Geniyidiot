@@ -79,7 +79,14 @@ namespace Geniyidiot
 
                     askedQuestions.Add(randomQuestionIndex);
                     Console.WriteLine(questions[randomQuestionIndex]);
-                    int userAnswer = Convert.ToInt32(Console.ReadLine());
+                    int userAnswer;
+
+                    while(!int.TryParse(Console.ReadLine(), out userAnswer))
+                    {
+                        Console.WriteLine("Пожалуйста, введите число!");
+                    }
+
+                    
                     int rightAnswer = answers[randomQuestionIndex];
                     if (userAnswer == rightAnswer)
                     {
