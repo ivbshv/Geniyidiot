@@ -8,7 +8,6 @@ namespace Geniyidiot
 {
     public class Program
     {
-
         static string[] GetQuestions(int countQuestions)
         {
             string[] questions = new string[countQuestions];
@@ -88,7 +87,6 @@ namespace Geniyidiot
                     }
                 }
 
-
                 int diagnosisIndex = Math.Min(countRightAnswers, diagnoses.Length - 1);
                 Console.WriteLine($"{name}, Ваш диагноз : {diagnoses[diagnosisIndex]}");
                 Console.WriteLine("Правильных ответов " + countRightAnswers);
@@ -100,10 +98,6 @@ namespace Geniyidiot
             } while (repeat);
 
             Console.WriteLine("Спасибо за игру!");
-
-
-
-
         }
     }
 }
