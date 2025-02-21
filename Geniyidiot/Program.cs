@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace Geniyidiot
 {
     public class Program
     {
+        const string ResultsFile = "results.txt";
         static string[] GetQuestions(int countQuestions)
         {
             string[] questions = new string[countQuestions];
@@ -47,13 +49,41 @@ namespace Geniyidiot
             return diagnoses;
         }
 
+        static void SaveResult(string name, int correctAnswers, string diagnosis)
+        {
+            using (StreamWriter writer = new StreamWriter(ResultsFile, true))
+            {
+                writer.WriteLine($"{name},{correctAnswers},{diagnosis}");
+            }
+        }
+
+        static void ShowResults()
+        {
+            if (!File.Exists(ResultsFile))
+            {
+                Console.WriteLine("Результатов пока нет.");
+                return;
+            }
+
+            Console.WriteLine("\nРезультаты тестирования:");
+            Console.WriteLine("ФИО\t\tПравильные ответы\tДиагноз");
+            Console.WriteLine(new string('-', 50));
+
+            string[] results = File.ReadAllLines(ResultsFile);
+            foreach (var result in results)
+            {
+                string[] data = result.Split(',');
+                Console.WriteLine($"{data[0],-15} {data[1],-20} {data[2]}");
+            }
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Введите Ваше имя");
             string name = Console.ReadLine();
             bool repeat;
 
-            do 
+            do
             {
                 int countQuestions = 7;
 
@@ -84,12 +114,12 @@ namespace Geniyidiot
                     Console.WriteLine(questions[randomQuestionIndex]);
                     int userAnswer;
 
-                    while(!int.TryParse(Console.ReadLine(), out userAnswer))
+                    while (!int.TryParse(Console.ReadLine(), out userAnswer))
                     {
                         Console.WriteLine("Пожалуйста, введите число!");
                     }
 
-                    
+
                     int rightAnswer = answers[randomQuestionIndex];
                     if (userAnswer == rightAnswer)
                     {
@@ -98,14 +128,23 @@ namespace Geniyidiot
                 }
 
                 int diagnosisIndex = countRightAnswers * (diagnoses.Length - 1) / countQuestions;
+                string diagnosis = diagnoses[diagnosisIndex];
                 Console.WriteLine($"{name}, Ваш диагноз : {diagnoses[diagnosisIndex]}");
                 Console.WriteLine("Правильных ответов " + countRightAnswers);
+
+                SaveResult(name, countRightAnswers, diagnosis);
 
                 Console.WriteLine("Хотите пройти тест снова? (да/нет)");
                 string response = Console.ReadLine().Trim().ToLower();
                 repeat = response == "да";
 
             } while (repeat);
+
+            Console.WriteLine("\nХотите посмотреть таблицу результатов? (да/нет)");
+            if (Console.ReadLine().Trim().ToLower() == "да")
+            {
+                ShowResults();
+            }
 
             Console.WriteLine("Спасибо за игру!");
         }
