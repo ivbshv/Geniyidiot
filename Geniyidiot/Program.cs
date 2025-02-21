@@ -66,7 +66,7 @@ namespace Geniyidiot
             }
 
             Console.WriteLine("\nРезультаты тестирования:");
-            Console.WriteLine("ФИО\t\tПравильные ответы\tДиагноз");
+            Console.WriteLine("Имя\t\tПравильные ответы\tДиагноз");
             Console.WriteLine(new string('-', 50));
 
             string[] results = File.ReadAllLines(ResultsFile);
