@@ -1,40 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Geniyidiot
 {
     public class Program
     {
-        
         static void Main(string[] args)
         {
             Console.WriteLine("Введите Ваше имя");
             string name = Console.ReadLine();
-            bool repeat;
-
-            do
+            while (true)
             {
                 int countQuestions = 7;
 
                 string[] questions = GetQuestions(countQuestions);
-
                 int[] answers = GetAnswers(countQuestions);
-
                 string[] diagnoses = GetDiagnoses();
 
                 int countRightAnswers = 0;
 
                 Random random = new Random();
-
                 List<int> askedQuestions = new List<int>();
 
                 for (int i = 0; i < countQuestions; i++)
                 {
-
                     Console.WriteLine("Вопрос № " + (i + 1));
 
                     int randomQuestionIndex;
@@ -45,13 +36,13 @@ namespace Geniyidiot
 
                     askedQuestions.Add(randomQuestionIndex);
                     Console.WriteLine(questions[randomQuestionIndex]);
+
                     int userAnswer;
 
                     while (!int.TryParse(Console.ReadLine(), out userAnswer))
                     {
                         Console.WriteLine("Пожалуйста, введите число!");
                     }
-
 
                     int rightAnswer = answers[randomQuestionIndex];
                     if (userAnswer == rightAnswer)
@@ -62,27 +53,68 @@ namespace Geniyidiot
 
                 int diagnosisIndex = countRightAnswers * (diagnoses.Length - 1) / countQuestions;
                 string diagnosis = diagnoses[diagnosisIndex];
-                Console.WriteLine($"{name}, Ваш диагноз : {diagnoses[diagnosisIndex]}");
+                Console.WriteLine($"{name}, Ваш диагноз : {diagnosis}");
                 Console.WriteLine("Правильных ответов " + countRightAnswers);
 
-                SaveResult(name, countRightAnswers, diagnosis);
+                SaveUserResult(name, countRightAnswers, diagnosis);
 
-                Console.WriteLine("Хотите пройти тест снова? (да/нет)");
-                string response = Console.ReadLine().Trim().ToLower();
-                repeat = response == "да";
+                
+                bool userChoice = UserChoise("Хотите посмотреть предыдущие результаты? (да/нет)");
+                if (userChoice)
+                {
+                    ShowUserResults();
+                }
 
-            } while (repeat);
-
-            Console.WriteLine("\nХотите посмотреть таблицу результатов? (да/нет)");
-            if (Console.ReadLine().Trim().ToLower() == "да")
-            {
-                ShowResults();
+                
+                userChoice = UserChoise("Хотите пройти тест снова? (да/нет)");
+                if (!userChoice)
+                {
+                    break;
+                }
             }
 
             Console.WriteLine("Спасибо за игру!");
         }
 
-        const string ResultsFile = "results.txt";
+        static void ShowUserResults()
+        {
+            using (StreamReader reader = new StreamReader("userResults.txt", Encoding.UTF8))
+            {
+                Console.WriteLine("{0,-20}{1,20}{2,15}", "Имя", "Количество правильных ответов", "Диагноз");
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    string[] values = line.Split('*');
+                    string name = values[0];
+                    int countRightAnswers = Convert.ToInt32(values[1]);
+                    string diagnosis = values[2];
+
+                    Console.WriteLine("{0,-20}{1,20}{2,23}", name, countRightAnswers, diagnosis);
+                }
+            }
+        }
+
+        static void SaveUserResult(string name, int countRightAnswers, string diagnosis)
+        {
+            string value = $"{name}*{countRightAnswers}*{diagnosis}";
+            AppendToFile("userResults.txt", value);
+        }
+
+        static void AppendToFile(string fileName, string value)
+        {
+            using (StreamWriter writer = new StreamWriter(fileName, true, Encoding.UTF8))
+            {
+                writer.WriteLine(value);
+            }
+        }
+
+        static bool UserChoise(string question)
+        {
+            Console.WriteLine(question);
+            string response = Console.ReadLine()?.Trim().ToLower();
+            return response == "да" || response == "yes";
+        }
+
         static string[] GetQuestions(int countQuestions)
         {
             string[] questions = new string[countQuestions];
@@ -120,34 +152,6 @@ namespace Geniyidiot
             diagnoses[5] = "гений";
 
             return diagnoses;
-        }
-
-        static void SaveResult(string name, int correctAnswers, string diagnosis)
-        {
-            using (StreamWriter writer = new StreamWriter(ResultsFile, true))
-            {
-                writer.WriteLine($"{name},{correctAnswers},{diagnosis}");
-            }
-        }
-
-        static void ShowResults()
-        {
-            if (!File.Exists(ResultsFile))
-            {
-                Console.WriteLine("Результатов пока нет.");
-                return;
-            }
-
-            Console.WriteLine("\nРезультаты тестирования:");
-            Console.WriteLine("Имя\t\tПравильные ответы\tДиагноз");
-            Console.WriteLine(new string('-', 50));
-
-            string[] results = File.ReadAllLines(ResultsFile);
-            foreach (var result in results)
-            {
-                string[] data = result.Split(',');
-                Console.WriteLine($"{data[0],-15} {data[1],-20} {data[2]}");
-            }
         }
     }
 }
