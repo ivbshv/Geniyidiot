@@ -13,10 +13,10 @@ namespace Geniyidiot
             string name = Console.ReadLine();
             while (true)
             {
-                int countQuestions = 7;
+                var questions = GetQuestions();
+                var answers = GetAnswers();
 
-                string[] questions = GetQuestions(countQuestions);
-                int[] answers = GetAnswers(countQuestions);
+                var countQuestions = questions.Count;
                 string[] diagnoses = GetDiagnoses();
 
                 int countRightAnswers = 0;
@@ -115,29 +115,29 @@ namespace Geniyidiot
             return response == "да" || response == "yes";
         }
 
-        static string[] GetQuestions(int countQuestions)
+        static List<string> GetQuestions()
         {
-            string[] questions = new string[countQuestions];
-            questions[0] = "Сколько будет два плюс два умноженное на два?";
-            questions[1] = "Бревно нужно распилить на 10 частей. Сколько распилов нужно сделать?";
-            questions[2] = "На двух руках 10 пальцев. Сколько пальцев на 5 руках?";
-            questions[3] = "Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?";
-            questions[4] = "Пять свечей горело, две потухли. Сколько свечей осталось?";
-            questions[5] = "Сколько будет 5 в квадрате?";
-            questions[6] = "Сколько месяцев в году имеют 28 дней?";
+            var questions = new List<string>();
+            questions.Add("Сколько будет два плюс два умноженное на два?");
+            questions.Add("Бревно нужно распилить на 10 частей. Сколько распилов нужно сделать?");
+            questions.Add("На двух руках 10 пальцев. Сколько пальцев на 5 руках?");
+            questions.Add("Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?");
+            questions.Add("Пять свечей горело, две потухли. Сколько свечей осталось?");
+            questions.Add("Сколько будет 5 в квадрате?");
+            questions.Add("Сколько месяцев в году имеют 28 дней?");
             return questions;
         }
 
-        static int[] GetAnswers(int countAnswers)
+        static List<int> GetAnswers()
         {
-            int[] answers = new int[countAnswers];
-            answers[0] = 6;
-            answers[1] = 9;
-            answers[2] = 25;
-            answers[3] = 60;
-            answers[4] = 2;
-            answers[5] = 25;
-            answers[6] = 12;
+            var answers = new List<int>();
+            answers.Add(6);
+            answers.Add(9);
+            answers.Add(25);
+            answers.Add(60);
+            answers.Add(2);
+            answers.Add(25));
+            answers.Add(12;
             return answers;
         }
 
