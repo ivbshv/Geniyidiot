@@ -12,6 +12,7 @@ namespace Geniyidiot
         {
             Console.WriteLine("Введите Ваше имя");
             string name = Console.ReadLine();
+            var user = new User(name);
 
             while (true)
             {
@@ -47,15 +48,17 @@ namespace Geniyidiot
                     int rightAnswer = questions[randomQuestionIndex].Answer;
                     if (userAnswer == rightAnswer)
                     {
-                        countRightAnswers++;
+                        user.IncreaseRightAnswers();
                     }
                 }
 
-                
+
                 int diagnosisIndex = countRightAnswers * (diagnoses.Length - 1) / countQuestions;
                 string diagnosis = diagnoses[diagnosisIndex];
 
-                var user = new User(name, countRightAnswers, diagnosis);
+                user.Diagnose = diagnosis;
+
+
                 user.Print();
 
 
@@ -68,7 +71,20 @@ namespace Geniyidiot
                     UsersResultStorage.ShowAll();
                 }
 
-                
+                userChoice = UserChoise($"{user.Name}, Хотите добавить новый вопрос? (да/нет)");
+                if (userChoice)
+                {
+                    AddNewQuestion();
+
+                }
+
+                userChoice = UserChoise($"{user.Name}, Хотите удалить существующий вопрос? (да/нет)");
+                if (userChoice)
+                {
+                    RemoveQuestion();
+
+                }
+
                 userChoice = UserChoise($"{user.Name}, Хотите пройти тест снова? (да/нет)");
                 if (!userChoice)
                 {
@@ -79,26 +95,44 @@ namespace Geniyidiot
             Console.WriteLine("Спасибо за игру!");
         }
 
-        
+        private static void RemoveQuestion()
+        {
+            Console.WriteLine("Введите номер вопроса, который хотите удалить");
+            var questions = QuestionsStorage.GetAll();
+
+            for (int i = 0; i < questions.Count; i++)
+            {
+                Console.WriteLine((i + 1) + ". " + questions[i].Text);
+            }
+            var number = int.Parse(Console.ReadLine());
+
+            while (number < 1 || number > questions.Count)
+            {
+                Console.WriteLine($"Введите число от 1 до {questions.Count}");
+                number = int.Parse(Console.ReadLine());
+            }
+
+            var removeQuestion = questions[number - 1];
+
+            QuestionsStorage.Remove(removeQuestion);
+        }
+
+        static void AddNewQuestion()
+        {
+            Console.WriteLine("Введите текст нового вопроса");
+            var text = Console.ReadLine();
+            Console.WriteLine("Введите ответ на данный вопрос");
+            var answer = int.Parse(Console.ReadLine());
+
+            var newQuestion = new Question(text, answer);
+            QuestionsStorage.Add(newQuestion);
+        }
+
         static bool UserChoise(string question)
         {
             Console.WriteLine(question);
             string response = Console.ReadLine()?.Trim().ToLower();
             return response == "да" || response == "yes";
-        }
-
-        static List<Question> GetQuestions()
-        {
-            var questions = new List<Question>();
-            questions.Add(new Question("Сколько будет два плюс два умноженное на два?", 6));
-            questions.Add(new Question("Бревно нужно распилить на 10 частей. Сколько распилов нужно сделать?", 9));
-            questions.Add(new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25));
-            questions.Add(new Question("Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?", 60));
-            questions.Add(new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 2));
-            questions.Add(new Question("Сколько будет 5 в квадрате?", 25));
-            questions.Add(new Question("Сколько месяцев в году имеют 28 дней?", 12));
-
-            return questions;
         }
 
         static string[] GetDiagnoses()

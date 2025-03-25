@@ -8,18 +8,19 @@ namespace Geniyidiot
 
         public int CountRightAnswers { get; set; }
 
-        public string Diagnoses { get; set; }
+        public string Diagnose { get; set; }
 
-        public User(string name, int countRightAnswers, string diagnoses)
+        public User(string name)
         {
             Name = name;
-            CountRightAnswers = countRightAnswers;
-            Diagnoses = diagnoses;
+            Diagnose = "Неизвестен";
         }
 
         public void Print()
         {
-            Console.WriteLine($"{Name}, твой диагноз: {Diagnoses}. Количество правильных ответов - {CountRightAnswers}.");
+            Console.WriteLine($"{Name}, твой диагноз: {Diagnose}. Количество правильных ответов - {CountRightAnswers}.");
         }
+
+        public void IncreaseRightAnswers() => CountRightAnswers++;
     }
 }

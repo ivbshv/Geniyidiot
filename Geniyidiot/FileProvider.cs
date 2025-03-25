@@ -15,17 +15,6 @@ namespace GeniyIdiot
             }
         }
 
-        public static void Replace(string fileName, IEnumerable<string> lines)
-        {
-            using (var writer = new StreamWriter(fileName, false, Encoding.UTF8))
-            {
-                foreach (var line in lines)
-                {
-                    writer.WriteLine(line);
-                }
-            }
-        }
-
         public static List<string> Read(string fileName)
         {
             var lines = new List<string>();
@@ -42,6 +31,16 @@ namespace GeniyIdiot
             }
 
             return lines;
+        }
+
+        public static bool Exists(string fileName)
+        {
+            return File.Exists(fileName);
+        }
+
+        public  static void Clear(string fileName)
+        {
+            File.WriteAllText(fileName, string.Empty);
         }
     }
 }

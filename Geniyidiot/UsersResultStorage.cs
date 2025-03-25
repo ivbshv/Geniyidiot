@@ -11,7 +11,7 @@ namespace GeniyIdiot
 
         public static void Add(User user)
         {
-            var line = $"{user.Name}*{user.CountRightAnswers}*{user.Diagnoses}";
+            var line = $"{user.Name}*{user.CountRightAnswers}*{user.Diagnose}";
             FileProvider.Append(ResultsFileName, line);
         }
 
@@ -30,7 +30,10 @@ namespace GeniyIdiot
                 var countRightAnswers = int.Parse(parts[1]);
                 var diagnosis = parts[2];
 
-                users.Add(new User(name, countRightAnswers, diagnosis));
+                var user = new User(name);
+                user.CountRightAnswers = countRightAnswers;
+                user.Diagnose = diagnosis;
+                users.Add(user);
             }
 
             return users;
@@ -44,7 +47,7 @@ namespace GeniyIdiot
             foreach (var user in users)
             {
                 Console.WriteLine("{0,-20}{1,20}{2,23}",
-                    user.Name, user.CountRightAnswers, user.Diagnoses);
+                    user.Name, user.CountRightAnswers, user.Diagnose);
             }
         }
     }
