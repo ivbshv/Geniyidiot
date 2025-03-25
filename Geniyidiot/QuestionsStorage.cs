@@ -1,5 +1,7 @@
 ﻿using Geniyidiot;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GeniyIdiot
 {
@@ -20,14 +22,24 @@ namespace GeniyIdiot
 
         public static void Add(Question question)
         {
-            if (!_questions.Contains(question))
-                _questions.Add(question);
+            if (question == null)
+                throw new ArgumentNullException(nameof(question));
+
+            if (string.IsNullOrWhiteSpace(question.Text))
+                throw new ArgumentException("Текст вопроса не может быть пустым");
+
+            if (_questions.Any(q => q.Text.Equals(question.Text, StringComparison.OrdinalIgnoreCase)))
+                throw new ArgumentException("Такой вопрос уже существует");
+
+            _questions.Add(question);
         }
 
         public static void Remove(int index)
         {
-            if (index >= 0 && index < _questions.Count)
-                _questions.RemoveAt(index);
+            if (index < 0 || index >= _questions.Count)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            _questions.RemoveAt(index);
         }
     }
 }
