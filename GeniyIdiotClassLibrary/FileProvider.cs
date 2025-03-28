@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace GeniyIdiot
+namespace GeniyIdiotClassLibrary
 {
     public static class FileProvider
     {

@@ -1,10 +1,11 @@
 ﻿using GeniyIdiot;
+using GeniyIdiotClassLibrary;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Geniyidiot
+namespace GeniyIdiot
 {
     public class Program
     {

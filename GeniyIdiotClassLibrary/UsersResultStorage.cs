@@ -1,9 +1,9 @@
-﻿using Geniyidiot;
+﻿using GeniyIdiotClassLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GeniyIdiot
+namespace GeniyIdiotClassLibrary
 {
     public static class UsersResultStorage
     {

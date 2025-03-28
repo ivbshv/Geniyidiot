@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Geniyidiot
+namespace GeniyIdiotClassLibrary
 {
     public class Question
     {
@@ -8,7 +8,7 @@ namespace Geniyidiot
 
         public int Answer { get; set; }
 
-        public Question(string text,int answer)
+        public Question(string text, int answer)
         {
             Text = text;
             Answer = answer;

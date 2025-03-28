@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Geniyidiot
+namespace GeniyIdiotClassLibrary
 {
     public class User
     {
