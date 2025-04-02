@@ -70,11 +70,10 @@ namespace WinFormApp
 
             if (endGame)
             {
-                int diagnosisIndex = countRightAnswers * (diagnoses.Length - 1) / countQuestions;
-                string diagnosis = diagnoses[diagnosisIndex];
-
                 user.CountRightAnswers = countRightAnswers;
-                user.Diagnose = diagnosis;
+                user.Diagnose = DiagnoseCalculator.Calculate(countRightAnswers, countQuestions);
+
+                UsersResultStorage.Add(user);
 
                 MessageBox.Show(($"{user.Name}, твой диагноз: {user.Diagnose}. Количество правильных ответов - {user.CountRightAnswers}."));
                 return;

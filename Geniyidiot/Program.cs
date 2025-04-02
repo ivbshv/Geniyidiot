@@ -55,7 +55,7 @@ namespace GeniyIdiot
 
 
                 int diagnosisIndex = countRightAnswers * (diagnoses.Length - 1) / countQuestions;
-                string diagnosis = diagnoses[diagnosisIndex];
+                string diagnosis = DiagnoseCalculator.Calculate(countRightAnswers, countQuestions);
 
                 user.Diagnose = diagnosis;
 
