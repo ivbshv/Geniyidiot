@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace WinFormApp
 {
-    public partial class mainForm : Form
+    public partial class MainForm : Form
     {
         private List<Question> questions;
 
@@ -23,22 +23,22 @@ namespace WinFormApp
 
         private int questionNumber = 1;
 
-        private User user;
+        User user;
 
-        private readonly string[] diagnoses = new string[]
-        {
-            "кретин", "идиот", "дурак", "нормальный", "талант", "гений"
-        };
-        public mainForm()
+        public MainForm()
         {
             InitializeComponent();
         }
 
         private void mainForm_Load(object sender, EventArgs e)
         {
+            var welcomeForm = new WelcomeForm();
+            welcomeForm.ShowDialog();
+
+            user = new User(welcomeForm.userNameTextBox.Text);
             questions = QuestionsStorage.GetAll();
             countQuestions = questions.Count;
-            user = new User("Неизвестно");
+            
 
             ShowNextQuestion();
             
