@@ -102,10 +102,6 @@
       <Project>{d84fdec8-d683-4217-8de3-cfc562572475}</Project>
       <Name>GeniyIdiotClassLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Geniyidiot\Geniyidiot.csproj">
-      <Project>{e77eb166-34f5-4904-bdfa-2e71ab1264f8}</Project>
-      <Name>Geniyidiot</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

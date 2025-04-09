@@ -3,6 +3,7 @@ using GeniyIdiotClassLibrary;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace GeniyIdiot
@@ -39,12 +40,9 @@ namespace GeniyIdiot
                     askedQuestions.Add(randomQuestionIndex);
                     Console.WriteLine(questions[randomQuestionIndex].Text);
 
-                    int userAnswer;
+                    int userAnswer = GetNumber();
 
-                    while (!int.TryParse(Console.ReadLine(), out userAnswer))
-                    {
-                        Console.WriteLine("Пожалуйста, введите число!");
-                    }
+                    
 
                     int rightAnswer = questions[randomQuestionIndex].Answer;
                     if (userAnswer == rightAnswer)
@@ -64,6 +62,8 @@ namespace GeniyIdiot
 
 
                 UsersResultStorage.Add(user);
+
+
 
 
                 bool userChoice = UserChoise($"{user.Name}, Хотите посмотреть предыдущие результаты? (да/нет)");
@@ -96,6 +96,15 @@ namespace GeniyIdiot
             Console.WriteLine("Спасибо за игру!");
         }
 
+        private static int GetNumber()
+        {
+            int number;
+            while (!InputValidator.TryParseToNumber(Console.ReadLine(), out number, out string errorMessage))
+            {
+                Console.WriteLine(errorMessage);
+            }
+            return number;
+        }
         private static void RemoveQuestion()
         {
             Console.WriteLine("Введите номер вопроса, который хотите удалить");
