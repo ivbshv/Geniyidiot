@@ -17,7 +17,7 @@ namespace WinFormApp
             InitializeComponent();
 
             questionTimer = new System.Windows.Forms.Timer();
-            questionTimer.Interval = 1000; // 1 секунда
+            questionTimer.Interval = 1000; 
             questionTimer.Tick += QuestionTimer_Tick;
         }
 
