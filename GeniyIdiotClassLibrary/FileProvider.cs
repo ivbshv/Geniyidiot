@@ -42,5 +42,13 @@ namespace GeniyIdiotClassLibrary
         {
             File.WriteAllText(fileName, string.Empty);
         }
+
+        public static void Replace(string fileName, string value)
+        {
+            using (var writer = new StreamWriter(fileName, false, Encoding.UTF8))
+            {
+                writer.Write(value);
+            }
+        }
     }
 }

@@ -1,42 +1,33 @@
 ﻿using GeniyIdiotClassLibrary;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace GeniyIdiotClassLibrary
 {
     public static class UsersResultStorage
     {
-        private const string ResultsFileName = "userResults.txt";
+        public static string Path = "userResults.json";
 
         public static void Add(User user)
         {
-            var line = $"{user.Name}*{user.CountRightAnswers}*{user.Diagnose}";
-            FileProvider.Append(ResultsFileName, line);
+            var userResults = GetAll();
+            userResults.Add(user);
+            Save(userResults);
         }
 
         public static List<User> GetAll()
         {
-            var lines = FileProvider.Read(ResultsFileName);
-            var users = new List<User>();
-
-            foreach (var line in lines)
+            if (!File.Exists(Path) || new FileInfo(Path).Length == 0)
             {
-                var parts = line.Split('*');
-                if (parts.Length != 3)
-                    continue;
-
-                var name = parts[0];
-                var countRightAnswers = int.Parse(parts[1]);
-                var diagnosis = parts[2];
-
-                var user = new User(name);
-                user.CountRightAnswers = countRightAnswers;
-                user.Diagnose = diagnosis;
-                users.Add(user);
+                return new List<User>();
             }
 
-            return users;
+            var jsonData = File.ReadAllText(Path, Encoding.UTF8); 
+            return JsonConvert.DeserializeObject<List<User>>(jsonData) ?? new List<User>();
         }
 
         public static void ShowAll()
@@ -49,6 +40,12 @@ namespace GeniyIdiotClassLibrary
                 Console.WriteLine("{0,-20}{1,20}{2,23}",
                     user.Name, user.CountRightAnswers, user.Diagnose);
             }
+        }
+
+        static void Save(List<User> usersResults)
+        {
+            var jsonData = JsonConvert.SerializeObject(usersResults, Formatting.Indented);
+            File.WriteAllText(Path, jsonData, Encoding.UTF8); 
         }
     }
 }
