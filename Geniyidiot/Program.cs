@@ -8,28 +8,27 @@ namespace GeniyIdiot
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Введите Ваше имя");
-            string name = Console.ReadLine();
-            var user = new User(name);
-
             while (true)
             {
+                Console.WriteLine("Введите Ваше имя");
+                string name = Console.ReadLine();
+                var user = new User(name);
                 var game = new Game(user);
 
                 while (!game.End())
                 {
+                    var currentQuestion = game.GetNextQuestion();
                     Console.WriteLine(game.GetQuestionNumberText());
-                    var question = game.GetNextQuestion();
-                    Console.WriteLine(question.Text);
+                    Console.WriteLine(currentQuestion.Text);
 
                     int userAnswer = GetNumber();
                     game.AcceptAnswer(userAnswer);
                 }
 
-                var result = game.CalculateDiagnose();
-                Console.WriteLine(result);
+                var message = game.CalculateDiagnose();
+                Console.WriteLine(message);
 
-                if (HandleUserChoices(user))
+                if (!HandleUserChoices(user))
                 {
                     break;
                 }
@@ -55,7 +54,7 @@ namespace GeniyIdiot
                 RemoveQuestion();
             }
 
-            return !UserChoice($"{user.Name}, Хотите пройти тест снова? (да/нет)");
+            return UserChoice($"{user.Name}, Хотите пройти тест снова? (да/нет)");
         }
 
         private static int GetNumber()

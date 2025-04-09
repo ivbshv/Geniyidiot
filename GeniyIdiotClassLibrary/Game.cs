@@ -7,7 +7,7 @@ public class Game
     User user;
     private List<Question> questions;
     private Question currentQuestion;
-    private int questionNumber = 1;
+    private int questionNumber = 0;
 
     public Game(User user)
     {
