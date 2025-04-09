@@ -1,10 +1,6 @@
-﻿using GeniyIdiot;
-using GeniyIdiotClassLibrary;
+﻿using GeniyIdiotClassLibrary;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace GeniyIdiot
 {
@@ -18,82 +14,48 @@ namespace GeniyIdiot
 
             while (true)
             {
-                var questions = QuestionsStorage.GetAll();
-                var countQuestions = questions.Count;
-                string[] diagnoses = GetDiagnoses();
+                var game = new Game(user);
 
-                int countRightAnswers = 0;
-
-                Random random = new Random();
-                List<int> askedQuestions = new List<int>();
-
-                for (int i = 0; i < countQuestions; i++)
+                while (!game.End())
                 {
-                    Console.WriteLine("Вопрос № " + (i + 1));
-
-                    int randomQuestionIndex;
-                    do
-                    {
-                        randomQuestionIndex = random.Next(0, countQuestions);
-                    } while (askedQuestions.Contains(randomQuestionIndex));
-
-                    askedQuestions.Add(randomQuestionIndex);
-                    Console.WriteLine(questions[randomQuestionIndex].Text);
+                    Console.WriteLine(game.GetQuestionNumberText());
+                    var question = game.GetNextQuestion();
+                    Console.WriteLine(question.Text);
 
                     int userAnswer = GetNumber();
-
-                    
-
-                    int rightAnswer = questions[randomQuestionIndex].Answer;
-                    if (userAnswer == rightAnswer)
-                    {
-                        user.IncreaseRightAnswers();
-                    }
+                    game.AcceptAnswer(userAnswer);
                 }
 
+                var result = game.CalculateDiagnose();
+                Console.WriteLine(result);
 
-                int diagnosisIndex = countRightAnswers * (diagnoses.Length - 1) / countQuestions;
-                string diagnosis = DiagnoseCalculator.Calculate(countRightAnswers, countQuestions);
-
-                user.Diagnose = diagnosis;
-
-
-                user.Print();
-
-
-                UsersResultStorage.Add(user);
-
-
-
-
-                bool userChoice = UserChoise($"{user.Name}, Хотите посмотреть предыдущие результаты? (да/нет)");
-                if (userChoice)
-                {
-                    UsersResultStorage.ShowAll();
-                }
-
-                userChoice = UserChoise($"{user.Name}, Хотите добавить новый вопрос? (да/нет)");
-                if (userChoice)
-                {
-                    AddNewQuestion();
-
-                }
-
-                userChoice = UserChoise($"{user.Name}, Хотите удалить существующий вопрос? (да/нет)");
-                if (userChoice)
-                {
-                    RemoveQuestion();
-
-                }
-
-                userChoice = UserChoise($"{user.Name}, Хотите пройти тест снова? (да/нет)");
-                if (!userChoice)
+                if (HandleUserChoices(user))
                 {
                     break;
                 }
             }
 
             Console.WriteLine("Спасибо за игру!");
+        }
+
+        private static bool HandleUserChoices(User user)
+        {
+            if (UserChoice($"{user.Name}, Хотите посмотреть предыдущие результаты? (да/нет)"))
+            {
+                UsersResultStorage.ShowAll();
+            }
+
+            if (UserChoice($"{user.Name}, Хотите добавить новый вопрос? (да/нет)"))
+            {
+                AddNewQuestion();
+            }
+
+            if (UserChoice($"{user.Name}, Хотите удалить существующий вопрос? (да/нет)"))
+            {
+                RemoveQuestion();
+            }
+
+            return !UserChoice($"{user.Name}, Хотите пройти тест снова? (да/нет)");
         }
 
         private static int GetNumber()
@@ -105,57 +67,44 @@ namespace GeniyIdiot
             }
             return number;
         }
+
         private static void RemoveQuestion()
         {
-            Console.WriteLine("Введите номер вопроса, который хотите удалить");
             var questions = QuestionsStorage.GetAll();
+            Console.WriteLine("Введите номер вопроса, который хотите удалить");
 
             for (int i = 0; i < questions.Count; i++)
             {
-                Console.WriteLine((i + 1) + ". " + questions[i].Text);
+                Console.WriteLine($"{i + 1}. {questions[i].Text}");
             }
-            var number = int.Parse(Console.ReadLine());
+
+            int number = GetNumber();
 
             while (number < 1 || number > questions.Count)
             {
                 Console.WriteLine($"Введите число от 1 до {questions.Count}");
-                number = int.Parse(Console.ReadLine());
+                number = GetNumber();
             }
 
-            var removeQuestion = questions[number - 1];
-
-            QuestionsStorage.Remove(removeQuestion);
+            QuestionsStorage.Remove(questions[number - 1]);
         }
 
-        static void AddNewQuestion()
+        private static void AddNewQuestion()
         {
             Console.WriteLine("Введите текст нового вопроса");
             var text = Console.ReadLine();
-            Console.WriteLine("Введите ответ на данный вопрос");
-            var answer = int.Parse(Console.ReadLine());
 
-            var newQuestion = new Question(text, answer);
-            QuestionsStorage.Add(newQuestion);
+            Console.WriteLine("Введите ответ на данный вопрос");
+            var answer = GetNumber();
+
+            QuestionsStorage.Add(new Question(text, answer));
         }
 
-        static bool UserChoise(string question)
+        private static bool UserChoice(string question)
         {
             Console.WriteLine(question);
             string response = Console.ReadLine()?.Trim().ToLower();
             return response == "да" || response == "yes";
-        }
-
-        static string[] GetDiagnoses()
-        {
-            string[] diagnoses = new string[6];
-            diagnoses[0] = "кретин";
-            diagnoses[1] = "идиот";
-            diagnoses[2] = "дурак";
-            diagnoses[3] = "нормальный";
-            diagnoses[4] = "талант";
-            diagnoses[5] = "гений";
-
-            return diagnoses;
         }
     }
 }

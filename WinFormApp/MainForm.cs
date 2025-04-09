@@ -13,15 +13,7 @@ namespace WinFormApp
 {
     public partial class MainForm : Form
     {
-        private List<Question> questions;
-
-        private int countQuestions;
-
-        private int countRightAnswers = 0;
-
-        private Question currentQuestion;
-
-        private int questionNumber = 1;
+        Game game;
 
         User user;
 
@@ -35,10 +27,9 @@ namespace WinFormApp
             var welcomeForm = new WelcomeForm();
             welcomeForm.ShowDialog();
 
-            user = new User(welcomeForm.userNameTextBox.Text);
-            questions = QuestionsStorage.GetAll();
-            countQuestions = questions.Count;
-            
+            var user = new User(welcomeForm.userNameTextBox.Text);
+            game = new Game(user);
+           
 
             ShowNextQuestion();
             
@@ -46,13 +37,12 @@ namespace WinFormApp
 
         private void ShowNextQuestion()
         {
-            var random = new Random();
-            var randomQuestionIndex = random.Next(0, questions.Count);
-            currentQuestion = questions[randomQuestionIndex];
+
+            var currentQuestion =  game.GetNextQuestion();
             questionTextLabel.Text = currentQuestion.Text;
 
-            questionNumberLabel.Text = $"Вопрос № {questionNumber}";
-            questionNumber++;
+            questionNumberLabel.Text = game.GetQuestionNumberText();
+            
         }
 
         private void nextButton_Click(object sender, EventArgs e)
@@ -64,24 +54,15 @@ namespace WinFormApp
             }
             else
             {
-                int rightAnswer = currentQuestion.Answer;
-                if (userAnswer == rightAnswer)
+                game.AcceptAnswer(userAnswer);
+
+               
+
+                if (game.End())
                 {
-                    countRightAnswers++;
-                    user.IncreaseRightAnswers();
-                }
-                questions.Remove(currentQuestion);
+                    var message = game.CalculateDiagnose();
 
-                var endGame = questions.Count == 0;
-
-                if (endGame)
-                {
-                    user.CountRightAnswers = countRightAnswers;
-                    user.Diagnose = DiagnoseCalculator.Calculate(countRightAnswers, countQuestions);
-
-                    UsersResultStorage.Add(user);
-
-                    MessageBox.Show(($"{user.Name}, твой диагноз: {user.Diagnose}. Количество правильных ответов - {user.CountRightAnswers}."));
+                    MessageBox.Show(message);
                     return;
                 }
                 ShowNextQuestion();
