@@ -1,6 +1,7 @@
 ﻿using GeniyIdiotClassLibrary;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace GeniyIdiot
 {
@@ -20,8 +21,32 @@ namespace GeniyIdiot
                     var currentQuestion = game.GetNextQuestion();
                     Console.WriteLine(game.GetQuestionNumberText());
                     Console.WriteLine(currentQuestion.Text);
+                    Console.WriteLine("\nУ вас 10 секунд чтобы ответить!");
 
-                    int userAnswer = GetNumber();
+                    int userAnswer = 0;
+                    bool answerGiven = false;
+
+                    // Таймер на 10 секунд
+                    for (int i = 10; i > 0; i--)
+                    {
+                        Console.Write($"\rОсталось: {i} сек. ");
+                        if (Console.KeyAvailable)
+                        {
+                            answerGiven = true;
+                            break;
+                        }
+                        Thread.Sleep(1000);
+                    }
+
+                    if (answerGiven)
+                    {
+                        userAnswer = GetNumber();
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nВремя вышло! Ответ: 0");
+                    }
+
                     game.AcceptAnswer(userAnswer);
                 }
 
