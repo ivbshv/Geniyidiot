@@ -32,6 +32,12 @@
             this.questionNumberLabel = new System.Windows.Forms.Label();
             this.questionTextLabel = new System.Windows.Forms.Label();
             this.userAnswerTextBox = new System.Windows.Forms.TextBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.показатьПредыдущиеРезультатыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.рестартToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // nextButton
@@ -52,7 +58,6 @@
             this.questionNumberLabel.Size = new System.Drawing.Size(79, 16);
             this.questionNumberLabel.TabIndex = 2;
             this.questionNumberLabel.Text = "Вопрос №1";
-            
             // 
             // questionTextLabel
             // 
@@ -70,7 +75,49 @@
             this.userAnswerTextBox.Size = new System.Drawing.Size(126, 22);
             this.userAnswerTextBox.TabIndex = 4;
             // 
-            // mainForm
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.файлToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(294, 28);
+            this.menuStrip1.TabIndex = 5;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // файлToolStripMenuItem
+            // 
+            this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.показатьПредыдущиеРезультатыToolStripMenuItem,
+            this.рестартToolStripMenuItem,
+            this.выходToolStripMenuItem});
+            this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
+            this.файлToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
+            this.файлToolStripMenuItem.Text = "Файл";
+            // 
+            // показатьПредыдущиеРезультатыToolStripMenuItem
+            // 
+            this.показатьПредыдущиеРезультатыToolStripMenuItem.Name = "показатьПредыдущиеРезультатыToolStripMenuItem";
+            this.показатьПредыдущиеРезультатыToolStripMenuItem.Size = new System.Drawing.Size(331, 26);
+            this.показатьПредыдущиеРезультатыToolStripMenuItem.Text = "Показать предыдущие результаты";
+            this.показатьПредыдущиеРезультатыToolStripMenuItem.Click += new System.EventHandler(this.показатьПредыдущиеРезультатыToolStripMenuItem_Click);
+            // 
+            // рестартToolStripMenuItem
+            // 
+            this.рестартToolStripMenuItem.Name = "рестартToolStripMenuItem";
+            this.рестартToolStripMenuItem.Size = new System.Drawing.Size(331, 26);
+            this.рестартToolStripMenuItem.Text = "Рестарт";
+            this.рестартToolStripMenuItem.Click += new System.EventHandler(this.рестартToolStripMenuItem_Click);
+            // 
+            // выходToolStripMenuItem
+            // 
+            this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(331, 26);
+            this.выходToolStripMenuItem.Text = "Выход";
+            this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -79,9 +126,13 @@
             this.Controls.Add(this.questionTextLabel);
             this.Controls.Add(this.questionNumberLabel);
             this.Controls.Add(this.nextButton);
-            this.Name = "mainForm";
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
+            this.Name = "MainForm";
             this.Text = "Гений Идиот";
             this.Load += new System.EventHandler(this.mainForm_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -93,6 +144,11 @@
         private System.Windows.Forms.Label questionNumberLabel;
         private System.Windows.Forms.Label questionTextLabel;
         private System.Windows.Forms.TextBox userAnswerTextBox;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem показатьПредыдущиеРезультатыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem рестартToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
     }
 }
 
